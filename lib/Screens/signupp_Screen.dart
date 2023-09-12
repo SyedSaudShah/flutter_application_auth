@@ -1,5 +1,3 @@
-// ignore_for_file: no_leading_underscores_for_local_identifiers
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_auth/riverpod/provider.dart';
 import 'package:flutter_application_auth/riverpod/stateProvider.dart';
@@ -24,14 +22,11 @@ class _SignuppscreenState extends ConsumerState<Signuppscreen> {
           } else if (PostState is PostLoadingState) {
             return const LoadingStateWidget();
           } else if (PostState is PostLoadedState) {
-            return Text("Loaded State");
+            return const Text("Loaded State");
           } else {
             return ErrorStateWidget(
                 errorMessage: (PostState as PostErrorState).message);
           }
-          // else {
-          //   return Text("oops");
-          // }
         },
       ),
     );
@@ -61,6 +56,7 @@ class RegisterUserPage extends ConsumerWidget {
     TextEditingController nameController = TextEditingController();
     TextEditingController lastnameController = TextEditingController();
     final formKey = GlobalKey<FormState>();
+
     void _submit() {
       final isValid = formKey.currentState!.validate();
       if (!isValid) {
@@ -88,16 +84,8 @@ class RegisterUserPage extends ConsumerWidget {
                 decoration: InputDecoration(
                   labelText: "Name",
                   fillColor: Colors.greenAccent,
-
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50.0)),
-                  // enabledBorder: OutlineInputBorder(
-                  //   borderSide: BorderSide(
-                  //     width: 5,
-                  //     color: Colors.greenAccent,
-                  //   ),
-                  //   borderRadius: BorderRadius.circular(50.0),
-                  // ),
                 ),
               ),
               Container(
@@ -112,16 +100,8 @@ class RegisterUserPage extends ConsumerWidget {
                 decoration: InputDecoration(
                   labelText: "Last Name",
                   fillColor: Colors.greenAccent,
-
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50.0)),
-                  // enabledBorder: OutlineInputBorder(
-                  //   borderSide: BorderSide(
-                  //     width: 5,
-                  //     color: Colors.greenAccent,
-                  //   ),
-                  //   borderRadius: BorderRadius.circular(50.0),
-                  // ),
                 ),
               ),
               Container(
@@ -144,16 +124,8 @@ class RegisterUserPage extends ConsumerWidget {
                 decoration: InputDecoration(
                   labelText: "Enter Email",
                   fillColor: Colors.greenAccent,
-
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50.0)),
-                  // enabledBorder: OutlineInputBorder(
-                  //   borderSide: BorderSide(
-                  //     width: 5,
-                  //     color: Colors.greenAccent,
-                  //   ),
-                  //   borderRadius: BorderRadius.circular(50.0),
-                  // ),
                 ),
               ),
               Container(
@@ -174,32 +146,29 @@ class RegisterUserPage extends ConsumerWidget {
                 decoration: InputDecoration(
                   labelText: "Enter Password",
                   fillColor: Colors.greenAccent,
-
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50.0)),
-                  // enabledBorder: OutlineInputBorder(
-                  //   borderSide: BorderSide(
-                  //     width: 5,
-                  //     color: Colors.greenAccent,
-                  //   ),
-                  //   borderRadius: BorderRadius.circular(50.0),
-                  // ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               ElevatedButton(
                   onPressed: () {
                     _submit();
                     if (!(emailController.value.text.isEmpty ||
-                        passwordController.value.text.isEmpty)) {
+                        passwordController.value.text.isEmpty ||
+                        nameController.value.text.isEmpty ||
+                        lastnameController.value.text.isEmpty)) {
+                      String name = nameController.value.text;
+                      String lastName = lastnameController.value.text;
                       String emailAddress = emailController.value.text.trim();
                       String confirmPassword =
                           passwordController.value.text.trim();
                       ref
                           .read(registerUserNotifierProvider.notifier)
-                          .registerUser(emailAddress, confirmPassword);
+                          .registerUser(
+                              emailAddress, confirmPassword, name, lastName);
 
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("Paapi chooloo")));
